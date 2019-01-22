@@ -8,16 +8,13 @@
 #include <iostream>
 using namespace std;
 
-#include <bcm2835.h>
+#include "../bcm/src/bcm2835.h"
  
 #include "led.hpp"
 #include "buttons.hpp"
 
  
 int main(int argc, char **argv) {
-	int leds[] = {LED0, LED1};	//lookup array for LED colour
-	int choice = 1;	//LED choice
-	
 	bcm2835_init();
 	
 	if(argc > 1) {
@@ -27,32 +24,26 @@ int main(int argc, char **argv) {
 	
 	cout << "week3 started\r\n";
 	
-	Led myLeds;
-	Button myButtons;
+	Led purple = Led(LED0);
+	Led yellow = Led(LED1);
+
+	Button butchoice = Button(BUT0, BCM2835_GPIO_PUD_UP);
+	Button butstop = Button(BUT1, BCM2835_GPIO_PUD_UP);
 	
+	Led* tmp = nullptr;
 	
-	myLeds.setdir(LED0, BCM2835_GPIO_FSEL_OUTP);
-	myLeds.setdir(LED1, BCM2835_GPIO_FSEL_OUTP);
-	
-	myButtons.setdir(BUT0, BCM2835_GPIO_FSEL_INPT);
-	myButtons.setpud(BUT0, BCM2835_GPIO_PUD_UP);
-	myButtons.setdir(BUT1, BCM2835_GPIO_FSEL_INPT);
-	myButtons.setpud(BUT1, BCM2835_GPIO_PUD_UP);
-		
 	//as long as BUT1 is not pressed
-	while(myButtons.read(BUT1)) {
+	while(butstop.read()) {
 		
-		if(myButtons.read(BUT0)) {	//if pressed
-			choice = 0;	//purple LED
-		}
-		else if(!myButtons.read(BUT0)) {	//if not pressed
-			choice = 1;	//yellow LED
+		if(butchoice.read()) {
+			tmp = &purple;
+			purple.blink(100);
 		}
 		else {
-			return 0;
+			tmp = &yellow;
+			yellow.blink(100);
 		}
-		
-		myLeds.blink(leds[choice]);
+		tmp->blink(100);
 	}
 	
 	cout << "week3 stopped.\r\n";

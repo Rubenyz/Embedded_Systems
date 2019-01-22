@@ -6,17 +6,15 @@
  */
 
 #include "buttons.hpp"
-#include <bcm2835.h>
+#include "../bcm/src/bcm2835.h"
 
 
-bool Button::read(int butno) {
+bool Button::read(void) {
 	return bcm2835_gpio_lev(butno);
 }
 
-void Button::setdir(int butno, int dir) {
-	bcm2835_gpio_fsel(butno, dir);
-}
-
-void Button::setpud(int butno, int pud) {
-	bcm2835_gpio_set_pud(butno, pud);
+Button::Button(int butn, int pud) {
+	butno = butn;
+	bcm2835_gpio_fsel(butn, BCM2835_GPIO_FSEL_INPT);
+	bcm2835_gpio_set_pud(butn, pud);
 }

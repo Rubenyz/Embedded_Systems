@@ -9,8 +9,9 @@
 #define BUT1 RPI_GPIO_P1_15 //stop button
 
 class Button {
+	private:
+		int butno;
 	public:
-		bool read(int butno);
-		void setdir(int butno, int dir);
-		void setpud(int butno, int pud);
+		bool read(void);
+		Button(int butn, int pud);
 };

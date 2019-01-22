@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "../bcm/src/bcm2835.h"
+#include "../../bcm/src/bcm2835.h"
 #include "./week2rpi.h"
 
 #define SENDDELAY 10

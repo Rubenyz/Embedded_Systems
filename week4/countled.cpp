@@ -13,7 +13,8 @@
 int data = 0;
 
 int CountLed::countfur(void) {
-	return (data++ % 4);
+	data = (data + 1) % 4;
+	return data;
 }
 
 void CountLed::setLeds(int ledno0, int ledno1) {

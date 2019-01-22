@@ -5,7 +5,7 @@
  * Ruben Stauttener
  */
 
-#include "../bcm/src/bcm2835.h"
+#include "../../bcm/src/bcm2835.h"
 
 #define BUT0 RPI_GPIO_P1_15	//Stop button
 #define DATA0 RPI_GPIO_P1_19	//DATA0 line

@@ -15,3 +15,12 @@ class ButtonLed:public Led {			//inherited from Led class
 		bool readButton(int butno);
 		void setLed(int ledno, int state);
 };
+
+
+
+
+
+
+
+
+//double inheritance van button en led

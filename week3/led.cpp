@@ -6,15 +6,17 @@
  */
 
 #include "led.hpp"
-#include <bcm2835.h>
+#include "../bcm/src/bcm2835.h"
 
-void Led::blink(int ledno) {
+void Led::blink(int period) {
 	bcm2835_gpio_write(ledno, 1);
-	delay(50);
+	delay(period/2);
 	bcm2835_gpio_write(ledno, 0);
-	delay(50);
+	delay(period/2);
 }
 
-void Led::setdir(int ledno, int dir) {
-	bcm2835_gpio_fsel(ledno, dir);
+
+Led::Led(int ledn) {	
+	this->ledno = ledn;
+	bcm2835_gpio_fsel(ledno, BCM2835_GPIO_FSEL_OUTP);
 }
