@@ -1,6 +1,6 @@
 /* week1.h
  *
- * Definitions and statements for op1.c
+ * Definitions and statements for week1.c
  * 18 Dec. 2018
  * Ruben Stauttener
  */

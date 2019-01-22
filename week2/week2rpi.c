@@ -20,12 +20,18 @@ int gpio_init(void) {
 	bcm2835_gpio_fsel(SYS0, BCM2835_GPIO_FSEL_INPT);
 	bcm2835_gpio_fsel(BUT0, BCM2835_GPIO_FSEL_INPT);
 
+	bcm2835_gpio_set_pud(BUT0, BCM2835_GPIO_PUD_UP);
+	bcm2835_gpio_set_pud(DATA0, BCM2835_GPIO_PUD_DOWN);
+	bcm2835_gpio_set_pud(DATA1, BCM2835_GPIO_PUD_DOWN);
+	bcm2835_gpio_set_pud(DATA2, BCM2835_GPIO_PUD_DOWN);
+
 	//SYS0 with pulldown
 	bcm2835_gpio_set_pud(SYS0, BCM2835_GPIO_PUD_DOWN);
 
 	return 1;
 }
 
+/*
 int sendinputpulse(uint8_t pin, uint8_t pud) {
 	bcm2835_gpio_set_pud(pin, BCM2835_GPIO_PUD_OFF);	//disable pullup/pulldown
 	bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);		//pin as output
@@ -35,6 +41,7 @@ int sendinputpulse(uint8_t pin, uint8_t pud) {
 	bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_INPT);		//pin as input
 	bcm2835_gpio_set_pud(pin, pud);				//enable pullup/pulldown as before
 }
+*/
 
 int main(void) {
 	int datalines[] = {DATA0, DATA1, DATA2};	//lookup array for data lines
@@ -52,25 +59,25 @@ int main(void) {
 	//as long as BUT0 is not pressed
 	while(bcm2835_gpio_lev(BUT0)) {
 		int data = 0;
-
-		delay(1000);
-
-		while(bcm2835_gpio_lev(SYS0));	//wait for SYS0 to become low
-
-		sendinputpulse(SYS0, BCM2835_GPIO_PUD_DOWN);
-
-		while(!bcm2835_gpio_lev(SYS0));	//wait for SYS0 to become high
--
-		delay(5);
 		
-		//sendinputpulse(SYS0, BCM2835_GPIO_PUD_DOWN);
-
+		//delay with stop button checking
+		for(int i=0; i<100 && bcm2835_gpio_lev(BUT0); i++) {
+			delay(10);
+		}
+		
+		bcm2835_gpio_set_pud(SYS0, BCM2835_GPIO_PUD_UP);				//make system line high
+		
+		while(bcm2835_gpio_lev(SYS0));	//wait for system line to become low
+				
 		for(int i=0; i<3; i++) {
-			data |= (bcm2835_gpio_lev(datalines[i] << i));		//parse parallel data
+			data |= (bcm2835_gpio_lev(datalines[i]) << i);		//parse parallel data
 		}
 
-		printf("Data received is: '%d'.\r\n", data);
-
+		printf("Binary button input is '%d'.\r\n", data);
+		
+		while(!bcm2835_gpio_lev(SYS0));
+		
+		bcm2835_gpio_set_pud(SYS0, BCM2835_GPIO_PUD_DOWN);			//make system line low
 	}
 
 	bcm2835_close();
