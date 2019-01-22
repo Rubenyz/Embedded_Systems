@@ -64,7 +64,7 @@ int main(void) {
 			return 0;
 		}
 		
-		//blink at 5Hz
+		//blink at 10Hz
 		bcm2835_gpio_write(leds[choice], 1);
 		delay(50);
 		bcm2835_gpio_write(leds[choice], 0);

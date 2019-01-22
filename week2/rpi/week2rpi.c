@@ -1,7 +1,7 @@
-/* week1.c
+/* week2rpi.c
  *
  * Double LED blink with choice and stop button
- * 18 Dec. 2018
+ * 22 Jan. 2018
  * Ruben Stauttener
  */
 
