@@ -1,0 +1,1 @@
+g++ -I../bcm/src/libbcm2835 ./week4.cpp ./led.cpp ./buttonled.cpp ./countled.cpp -lbcm2835 -o week4

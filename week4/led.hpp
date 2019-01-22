@@ -7,6 +7,7 @@
 
 #define LED0 RPI_GPIO_P1_16 //purple LED (bit position 0)
 #define LED1 RPI_GPIO_P1_18 //amber LED  (bit position 1)
+#define LED2 RPI_GPIO_P1_24 //red LED (button-LED)
 
 class Led {
 	public:

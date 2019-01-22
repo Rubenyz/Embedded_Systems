@@ -5,9 +5,6 @@
  * Ruben Stauttener
  */
 
-#include <iostream>
-using namespace std;
-
 #include "led.hpp"
 #include "countled.hpp"
 
@@ -17,4 +14,11 @@ int data = 0;
 
 int CountLed::countfur(void) {
 	return (data++ % 4);
+}
+
+void CountLed::setLeds(int ledno0, int ledno1) {
+	int count = countfur();
+	
+	light(ledno0, count & (0x01 << 0));
+	light(ledno1, count & (0x01 << 1));
 }

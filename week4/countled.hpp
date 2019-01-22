@@ -11,4 +11,5 @@
 class CountLed:public Led {			//inherited from Led class
 	public:
 		int countfur(void);
+		void setLeds(int ledno0, int ledno1);
 };

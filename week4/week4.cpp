@@ -12,12 +12,10 @@ using namespace std;
  
 #include "led.hpp"
 #include "countled.hpp"
-
-//#include "buttons.hpp"
+#include "buttonled.hpp"
 
  
 int main(int argc, char **argv) {
-	int count = 0;
 	
 	bcm2835_init();
 	
@@ -31,20 +29,33 @@ int main(int argc, char **argv) {
 
 	Led myLeds;
 	CountLed myCountLeds;
+	ButtonLed myButtonLeds;
 	
 	myCountLeds.setdir(LED0, BCM2835_GPIO_FSEL_OUTP);
 	myCountLeds.setdir(LED1, BCM2835_GPIO_FSEL_OUTP);
 	
-	count = myCountLeds.countfur();
-	myCountLeds.light(LED0, count & (0x01 << 0));
-	myCountLeds.light(LED1, count & (0x01 << 1));
+	myButtonLeds.setdir(LED2, BCM2835_GPIO_FSEL_OUTP);
 	
-	while(1) {
-		cout << "Hoi\r\n\r\n";
-		delay(1000);
+	myButtonLeds.setButtonDir(BUT0, BCM2835_GPIO_FSEL_INPT);			//buttonled
+	myButtonLeds.setButtonPud(BUT0, BCM2835_GPIO_PUD_UP);
+	
+	myButtonLeds.setButtonDir(BUT1, BCM2835_GPIO_FSEL_INPT);			//stopled
+	myButtonLeds.setButtonPud(BUT1, BCM2835_GPIO_PUD_UP);
+	
+
+	while(myButtonLeds.readButton(BUT1)) {
+		myCountLeds.setLeds(LED0, LED1);
+		
+		for(int i=0; i<100 && myButtonLeds.readButton(BUT1); i++) {
+			delay(10);
+			myButtonLeds.setLed(LED2, myButtonLeds.readButton(BUT0));			
+		}		
 	}
 	
 	
+	myCountLeds.light(LED0, 0);
+	myCountLeds.light(LED1, 0);
+	myCountLeds.light(LED2, 0);
 	
 	cout << "week4 stopped.\r\n";
 	return 1;
