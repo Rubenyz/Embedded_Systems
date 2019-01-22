@@ -1,0 +1,1 @@
+gcc ./week1.c ../../bcm/src/bcm2835.c -o week1 -std=gnu11
