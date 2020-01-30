@@ -1,12 +1,2 @@
-PROG = a
-CC = g++
-CPPFLAGS = -I../bcm/src/libbcm2835
-LDFLAGS = -lbcm2835
-OBJS = eindopdracht.o
-
-$(PROG) : $(OBJS)
-		$(CC) $(LDFLAGS) -o $(PROG) $(OBJS)
-main.o :
-		$(CC) $(CPPFLAGS) -c eindopdracht.cpp
-clean :
-		rm -f core $(PROG) $(OBJS)
+snake: snake.c spi.c button.c paint.c
+	gcc ./snake.c ./spi.c ./button.c ./paint.c ../bcm/src/bcm2835.c -lbcm2835 -lpthread -o snake -std=gnu11 -lm
